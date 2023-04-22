@@ -1,12 +1,12 @@
 package com.example.myapplication.data.source.network
 
 import com.example.myapplication.data.model.network.TaskModel
-import com.example.myapplication.domain.util.Result
+import retrofit2.Response
 
 /**
  * @author Raphael Fersan
  */
 internal interface NetworkTaskDataSource {
 
-    suspend fun getTaskFromNetwork(): Result<TaskModel>
+    suspend fun getTaskFromNetwork(): Response<TaskModel>?
 }

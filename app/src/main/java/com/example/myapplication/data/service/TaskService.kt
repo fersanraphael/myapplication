@@ -1,4 +1,4 @@
-package com.example.myapplication.framework.data.service
+package com.example.myapplication.data.service
 
 import com.example.myapplication.data.model.network.TaskModel
 import com.example.myapplication.data.util.API_ENDPOINT_TASK
@@ -11,5 +11,5 @@ import retrofit2.http.GET
 internal interface TaskService {
 
     @GET(API_ENDPOINT_TASK)
-    suspend fun getTaskFromNetwork(): Response<TaskModel>
+    suspend fun getTaskFromNetwork(): Response<TaskModel>?
 }

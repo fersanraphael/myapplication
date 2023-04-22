@@ -10,6 +10,7 @@ import com.example.myapplication.data.source.network.NetworkTaskDataSource
 import com.example.myapplication.domain.entity.TaskEntity
 import com.example.myapplication.domain.repository.TaskRepository
 import com.example.myapplication.domain.util.Result
+import retrofit2.Response
 
 /**
  * @author Raphael Fersan
@@ -21,9 +22,11 @@ internal class TaskRepositoryImpl constructor(
 
     override suspend fun addTaskToLocal(taskEntity: TaskEntity): Result<TaskEntity> {
         return try {
-            when (val result: Result<TaskDTO> = localTaskDataSource.addTaskToLocal(taskEntity.toDTO())) {
-                is Result.Failure -> Result.Failure(result.throwable)
-                is Result.Success -> Result.Success(result.value.toEntity())
+            val result: TaskDTO? = localTaskDataSource.addTaskToLocal(taskEntity.toDTO())
+            if (result != null) {
+                Result.Success(result.toEntity())
+            } else {
+                Result.Failure()
             }
         } catch (e: Exception) {
             Result.Failure(e)
@@ -32,9 +35,12 @@ internal class TaskRepositoryImpl constructor(
 
     override suspend fun getTaskFromNetwork(): Result<TaskEntity> {
         return try {
-            when (val result: Result<TaskModel> = networkTaskDataSource.getTaskFromNetwork()) {
-                is Result.Failure -> Result.Failure(result.throwable)
-                is Result.Success -> Result.Success(result.value.toEntity())
+            val response: Response<TaskModel> = networkTaskDataSource.getTaskFromNetwork()
+            if (response.isSuccessful) {
+                val result: TaskModel = response.body() ?: return Result.Failure()
+                Result.Success(result.toEntity())
+            } else {
+                Result.Failure()
             }
         } catch (e: Exception) {
             Result.Failure(e)
@@ -43,9 +49,11 @@ internal class TaskRepositoryImpl constructor(
 
     override suspend fun getTaskListFromLocal(): Result<List<TaskEntity>> {
         return try {
-            when (val result: Result<List<TaskDTO>> = localTaskDataSource.getTaskListFromLocal()) {
-                is Result.Failure -> Result.Failure(result.throwable)
-                is Result.Success -> Result.Success(result.value.map(TaskDTO::toEntity))
+            val result: List<TaskDTO>? = localTaskDataSource.getTaskListFromLocal()
+            if (result != null) {
+                Result.Success(result.map(TaskDTO::toEntity))
+            } else {
+                Result.Failure()
             }
         } catch (e: Exception) {
             Result.Failure(e)
