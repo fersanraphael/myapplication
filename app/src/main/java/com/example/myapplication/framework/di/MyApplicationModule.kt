@@ -2,13 +2,13 @@ package com.example.myapplication.framework.di
 
 import com.example.myapplication.data.repository.TaskRepositoryImpl
 import com.example.myapplication.data.source.local.LocalTaskDataSource
-import com.example.myapplication.data.source.network.NetworkTaskDataSource
 import com.example.myapplication.domain.repository.TaskRepository
 import com.example.myapplication.domain.usecase.*
 import com.example.myapplication.framework.MyApplicationRealm
 import com.example.myapplication.framework.MyApplicationRetrofit
 import com.example.myapplication.framework.data.source.local.LocalTaskDataSourceImpl
-import com.example.myapplication.framework.data.source.network.NetworkTaskDataSourceImpl
+import com.example.myapplication.framework.data.source.network.NetworkDataSource
+import com.example.myapplication.framework.data.source.network.NetworkDataSourceImpl
 import com.example.myapplication.framework.util.schemes
 import com.example.myapplication.presentation.viewmodel.MainViewModel
 import io.realm.kotlin.RealmConfiguration
@@ -44,8 +44,8 @@ internal val myApplicationModule: Module = module {
         )
     }
 
-    factory<NetworkTaskDataSource> {
-        NetworkTaskDataSourceImpl(
+    factory<NetworkDataSource> {
+        NetworkDataSourceImpl(
             myApplicationRetrofit = get()
         )
     }
@@ -53,7 +53,7 @@ internal val myApplicationModule: Module = module {
     factory<TaskRepository> {
         TaskRepositoryImpl(
             localTaskDataSource = get(),
-            networkTaskDataSource = get()
+            networkDataSource = get()
         )
     }
 

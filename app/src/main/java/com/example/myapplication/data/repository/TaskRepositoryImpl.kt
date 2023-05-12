@@ -6,17 +6,18 @@ import com.example.myapplication.data.model.local.toEntity
 import com.example.myapplication.data.model.network.TaskModel
 import com.example.myapplication.data.model.network.toEntity
 import com.example.myapplication.data.source.local.LocalTaskDataSource
-import com.example.myapplication.data.source.network.NetworkTaskDataSource
+import com.example.myapplication.data.util.API_ENDPOINT_TASK
 import com.example.myapplication.domain.entity.TaskEntity
 import com.example.myapplication.domain.repository.TaskRepository
 import com.example.myapplication.domain.util.Result
+import com.example.myapplication.framework.data.source.network.NetworkDataSource
 
 /**
  * @author Raphael Fersan
  */
 internal class TaskRepositoryImpl constructor(
     private val localTaskDataSource: LocalTaskDataSource,
-    private val networkTaskDataSource: NetworkTaskDataSource
+    private val networkDataSource: NetworkDataSource
 ) : TaskRepository {
 
     override suspend fun addTaskToLocal(taskEntity: TaskEntity): Result<TaskEntity> {
@@ -32,7 +33,7 @@ internal class TaskRepositoryImpl constructor(
 
     override suspend fun getTaskFromNetwork(): Result<TaskEntity> {
         return try {
-            when (val result: Result<TaskModel> = networkTaskDataSource.getTaskFromNetwork()) {
+            when (val result: Result<TaskModel> = networkDataSource.get(API_ENDPOINT_TASK, TaskModel::class.java)) {
                 is Result.Failure -> Result.Failure(result.throwable)
                 is Result.Success -> Result.Success(result.value.toEntity())
             }
