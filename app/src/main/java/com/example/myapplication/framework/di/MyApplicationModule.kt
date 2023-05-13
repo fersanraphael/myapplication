@@ -2,6 +2,7 @@ package com.example.myapplication.framework.di
 
 import com.example.myapplication.data.repository.TaskRepositoryImpl
 import com.example.myapplication.data.source.local.LocalTaskDataSource
+import com.example.myapplication.data.source.network.NetworkDataSource
 import com.example.myapplication.domain.repository.TaskRepository
 import com.example.myapplication.domain.usecase.AddTaskToLocalUseCase
 import com.example.myapplication.domain.usecase.GetTaskFromNetworkUseCase
@@ -9,7 +10,6 @@ import com.example.myapplication.domain.usecase.GetTaskListFromLocalUseCase
 import com.example.myapplication.framework.MyApplicationRealm
 import com.example.myapplication.framework.MyApplicationRetrofit
 import com.example.myapplication.framework.data.source.local.LocalTaskDataSourceImpl
-import com.example.myapplication.framework.data.source.network.NetworkDataSource
 import com.example.myapplication.framework.data.source.network.NetworkDataSourceImpl
 import com.example.myapplication.framework.util.schemes
 import com.example.myapplication.presentation.viewmodel.MainViewModel
