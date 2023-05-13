@@ -13,18 +13,12 @@ import kotlinx.coroutines.flow.flowOn
 /**
  * @author Raphael Fersan
  */
-
-internal interface GetTaskListFromLocalUseCase {
-
-    operator fun invoke(): Flow<Result<List<TaskEntity>>>
-}
-
-internal class GetTaskListFromLocalUseCaseImpl constructor(
+internal class GetTaskListFromLocalUseCase constructor(
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val taskRepository: TaskRepository
-) : GetTaskListFromLocalUseCase {
+) {
 
-    override fun invoke(): Flow<Result<List<TaskEntity>>> {
+    operator fun invoke(): Flow<Result<List<TaskEntity>>> {
         return flow {
             emit(taskRepository.getTaskListFromLocal())
         }.catch {

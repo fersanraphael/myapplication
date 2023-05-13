@@ -1,5 +1,6 @@
 package com.example.myapplication.framework.data.source.network
 
+import com.example.myapplication.data.source.network.NetworkDataSource
 import com.example.myapplication.domain.util.Result
 import com.example.myapplication.framework.MyApplicationRetrofit
 import com.example.myapplication.framework.data.service.NetworkService
@@ -12,16 +13,6 @@ import retrofit2.Retrofit
 /**
  * @author Raphael Fersan
  */
-
-internal interface NetworkDataSource {
-
-    suspend fun <R> get(
-        url: String,
-        responseType: Class<R>,
-        headerMap: Map<String, String> = mapOf()
-    ): Result<R>
-}
-
 internal class NetworkDataSourceImpl constructor(
     private val myApplicationRetrofit: MyApplicationRetrofit
 ) : NetworkDataSource {

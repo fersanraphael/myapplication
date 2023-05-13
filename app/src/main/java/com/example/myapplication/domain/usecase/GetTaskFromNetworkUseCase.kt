@@ -13,18 +13,12 @@ import kotlinx.coroutines.flow.flowOn
 /**
  * @author Raphael Fersan
  */
-
-internal interface GetTaskFromNetworkUseCase {
-
-    operator fun invoke(): Flow<Result<TaskEntity>>
-}
-
-internal class GetTaskFromNetworkUseCaseImpl constructor(
+internal class GetTaskFromNetworkUseCase constructor(
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val taskRepository: TaskRepository
-) : GetTaskFromNetworkUseCase {
+) {
 
-    override fun invoke(): Flow<Result<TaskEntity>> {
+    operator fun invoke(): Flow<Result<TaskEntity>> {
         return flow {
             emit(taskRepository.getTaskFromNetwork())
         }.catch {

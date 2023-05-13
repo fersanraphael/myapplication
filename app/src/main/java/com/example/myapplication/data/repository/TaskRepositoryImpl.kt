@@ -6,11 +6,11 @@ import com.example.myapplication.data.model.local.toEntity
 import com.example.myapplication.data.model.network.TaskModel
 import com.example.myapplication.data.model.network.toEntity
 import com.example.myapplication.data.source.local.LocalTaskDataSource
+import com.example.myapplication.data.source.network.NetworkDataSource
 import com.example.myapplication.data.util.API_ENDPOINT_TASK
 import com.example.myapplication.domain.entity.TaskEntity
 import com.example.myapplication.domain.repository.TaskRepository
 import com.example.myapplication.domain.util.Result
-import com.example.myapplication.framework.data.source.network.NetworkDataSource
 
 /**
  * @author Raphael Fersan

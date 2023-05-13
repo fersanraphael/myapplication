@@ -20,10 +20,10 @@ internal class LocalTaskDataSourceImpl constructor(
 
     override suspend fun addTaskToLocal(taskDTO: TaskDTO): Result<TaskDTO> {
         return try {
-            val data: TaskDTO? = realm?.writeBlocking {
+            val data: TaskDTO = realm?.writeBlocking {
                 copyToRealm(taskDTO)
-            }
-            Result.Success(data as TaskDTO)
+            } ?: return Result.Failure()
+            Result.Success(data)
         } catch (e: Exception) {
             Result.Failure(e)
         }
@@ -31,10 +31,10 @@ internal class LocalTaskDataSourceImpl constructor(
 
     override suspend fun getTaskListFromLocal(): Result<List<TaskDTO>> {
         return try {
-            val data: List<TaskDTO>? = realm?.copyFromRealm(
-                realm!!.query<TaskDTO>().find()
-            )
-            Result.Success(data as List<TaskDTO>)
+            val data: List<TaskDTO> = realm?.run {
+                copyFromRealm(query<TaskDTO>().find())
+            } ?: return Result.Failure()
+            Result.Success(data)
         } catch (e: Exception) {
             Result.Failure(e)
         }
