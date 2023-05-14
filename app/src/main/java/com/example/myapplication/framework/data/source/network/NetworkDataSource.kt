@@ -1,6 +1,5 @@
 package com.example.myapplication.framework.data.source.network
 
-import com.example.myapplication.data.source.network.NetworkDataSource
 import com.example.myapplication.domain.util.Result
 import com.example.myapplication.framework.MyApplicationRetrofit
 import com.example.myapplication.framework.data.service.NetworkService
@@ -13,42 +12,41 @@ import retrofit2.Retrofit
 /**
  * @author Raphael Fersan
  */
-internal class NetworkDataSourceImpl constructor(
+internal class NetworkDataSource constructor(
     private val myApplicationRetrofit: MyApplicationRetrofit
-) : NetworkDataSource {
+) {
 
     private val networkService: NetworkService? by lazy {
         val retrofit: Retrofit? = myApplicationRetrofit.get()
         retrofit?.create(NetworkService::class.java)
     }
 
-    override suspend fun <R> get(
+    internal suspend inline fun <reified R> get(
         url: String,
-        responseType: Class<R>,
-        headerMap: Map<String, String>
+        headerMap: Map<String, String> = mapOf()
     ): Result<R> {
         return try {
             val response: Response<R> = networkService?.get(url, headerMap) ?: return Result.Failure()
-            response.getResultOf(responseType)
+            response.getResult()
         } catch (e: Exception) {
             Result.Failure(e)
         }
     }
 
     @Throws(Exception::class)
-    private fun <R> Response<R>.getResultOf(classOf: Class<R>): Result<R> {
+    private inline fun <reified R> Response<R>.getResult(): Result<R> {
         return if (isSuccessful) {
             val data: R = body() ?: return Result.Failure()
-            Result.Success(data.asObject(classOf))
+            Result.Success(data.asObject())
         } else {
             Result.Failure()
         }
     }
 
     @Throws(Exception::class)
-    private fun <T> T.asObject(classOf: Class<T>): T {
+    private inline fun <reified T> T.asObject(): T {
         val gson: Gson = GsonBuilder().create()
         val jsonElement: JsonElement = gson.toJsonTree(this)
-        return gson.fromJson(jsonElement, classOf)
+        return gson.fromJson(jsonElement, T::class.java)
     }
 }
