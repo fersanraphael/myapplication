@@ -8,7 +8,7 @@ import retrofit2.http.Url
 /**
  * @author Raphael Fersan
  */
-internal interface NetworkService {
+internal interface GenericNetworkService {
 
     @GET
     suspend fun <A> get(

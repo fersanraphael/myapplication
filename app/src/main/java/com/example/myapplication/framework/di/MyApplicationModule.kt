@@ -7,8 +7,8 @@ import com.example.myapplication.domain.usecase.GetTaskFromNetworkUseCase
 import com.example.myapplication.domain.usecase.GetTaskListFromLocalUseCase
 import com.example.myapplication.framework.MyApplicationRealm
 import com.example.myapplication.framework.MyApplicationRetrofit
-import com.example.myapplication.framework.data.source.local.LocalDataSource
-import com.example.myapplication.framework.data.source.network.NetworkDataSource
+import com.example.myapplication.framework.data.source.local.GenericLocalDataSource
+import com.example.myapplication.framework.data.source.network.GenericNetworkDataSource
 import com.example.myapplication.framework.util.schemes
 import com.example.myapplication.presentation.viewmodel.MainViewModel
 import io.realm.kotlin.RealmConfiguration
@@ -39,21 +39,21 @@ internal val myApplicationModule: Module = module {
     }
 
     factory {
-        LocalDataSource(
+        GenericLocalDataSource(
             myApplicationRealm = get()
         )
     }
 
     factory {
-        NetworkDataSource(
+        GenericNetworkDataSource(
             myApplicationRetrofit = get()
         )
     }
 
     factory<TaskRepository> {
         TaskRepositoryImpl(
-            localDataSource = get(),
-            networkDataSource = get()
+            genericLocalDataSource = get(),
+            genericNetworkDataSource = get()
         )
     }
 

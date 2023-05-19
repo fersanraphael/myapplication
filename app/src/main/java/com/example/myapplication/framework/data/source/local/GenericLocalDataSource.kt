@@ -10,7 +10,7 @@ import io.realm.kotlin.types.RealmObject
 /**
  * @author Raphael Fersan
  */
-internal class LocalDataSource constructor(
+internal class GenericLocalDataSource constructor(
     private val myApplicationRealm: MyApplicationRealm
 ) {
 
@@ -33,10 +33,10 @@ internal class LocalDataSource constructor(
     internal inline fun <reified R : RealmObject> get(query: String = TRUE_PREDICATE): Result<List<R>> {
         return try {
             val realm: Realm = realm ?: return Result.Failure()
-            val data: List<R> = realm.run {
+            val response: List<R> = realm.run {
                 copyFromRealm(query<R>(query).find())
             }
-            Result.Success(data)
+            Result.Success(response)
         } catch (e: Exception) {
             Result.Failure(e)
         }

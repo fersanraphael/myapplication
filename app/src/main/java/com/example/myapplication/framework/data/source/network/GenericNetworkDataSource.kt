@@ -2,7 +2,7 @@ package com.example.myapplication.framework.data.source.network
 
 import com.example.myapplication.domain.util.Result
 import com.example.myapplication.framework.MyApplicationRetrofit
-import com.example.myapplication.framework.data.service.NetworkService
+import com.example.myapplication.framework.data.service.GenericNetworkService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
@@ -12,13 +12,13 @@ import retrofit2.Retrofit
 /**
  * @author Raphael Fersan
  */
-internal class NetworkDataSource constructor(
+internal class GenericNetworkDataSource constructor(
     private val myApplicationRetrofit: MyApplicationRetrofit
 ) {
 
-    private val networkService: NetworkService? by lazy {
+    private val genericNetworkService: GenericNetworkService? by lazy {
         val retrofit: Retrofit? = myApplicationRetrofit.get()
-        retrofit?.create(NetworkService::class.java)
+        retrofit?.create(GenericNetworkService::class.java)
     }
 
     internal suspend inline fun <reified R> get(
@@ -26,7 +26,7 @@ internal class NetworkDataSource constructor(
         headerMap: Map<String, String> = mapOf()
     ): Result<R> {
         return try {
-            val response: Response<R> = networkService?.get(url, headerMap) ?: return Result.Failure()
+            val response: Response<R> = genericNetworkService?.get(url, headerMap) ?: return Result.Failure()
             response.getResult()
         } catch (e: Exception) {
             Result.Failure(e)
