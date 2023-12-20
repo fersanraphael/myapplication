@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
 
-    <base-config cleartextTrafficPermitted="true" />
+    <domain-config>
+        <domain includeSubdomains="true">boredapi.com</domain>
+        <trust-anchors>
+            <certificates src="@raw/boredapi" />
+        </trust-anchors>
+    </domain-config>
 
 </network-security-config>
